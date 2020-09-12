@@ -5,7 +5,7 @@
  * courses, books, articles, and the like. Contact us if you are in doubt.
  * We make no guarantees that this code is fit for any purpose. 
  * Visit http://www.pragmaticprogrammer.com/titles/jgade for more book information.
-***/
+ ***/
 /*- ------------------------------------------------------------------ -*/
 /*-    Copyright (c) James W. Grenning -- All Rights Reserved          -*/
 /*-    For use by owners of Test-Driven Development for Embedded C,    -*/
@@ -27,7 +27,11 @@
 #ifndef D_LedDriver_H
 #define D_LedDriver_H
 
-void LedDriver_Create(void);
+void LedDriver_Create(u_int16_t *);
 void LedDriver_Destroy(void);
+
+void LedDriver_TurnOn(int);
+void LedDriver_TurnOff(int);
+void LedDriver_TurnAllOn(void);
 
 #endif  /* D_LedDriver_H */

@@ -5,7 +5,7 @@
  * courses, books, articles, and the like. Contact us if you are in doubt.
  * We make no guarantees that this code is fit for any purpose. 
  * Visit http://www.pragmaticprogrammer.com/titles/jgade for more book information.
-***/
+ ***/
 /*- ------------------------------------------------------------------ -*/
 /*-    Copyright (c) James W. Grenning -- All Rights Reserved          -*/
 /*-    For use by owners of Test-Driven Development for Embedded C,    -*/
@@ -28,12 +28,37 @@
 #include <stdlib.h>
 #include <memory.h>
 
-void LedDriver_Create(void)
+static u_int16_t * ledsAddress;
+
+enum {
+  ALL_LEDS_ON = ~0x0,
+  ALL_LEDS_OFF = ~ALL_LEDS_ON,
+};
+
+static u_int16_t convertLedNumberToBitMask(int ledNumber) {
+  return 0x1 << (ledNumber - 1);
+}
+
+void LedDriver_Create(u_int16_t * address)
 {
+  ledsAddress = address;
+  *address = ALL_LEDS_OFF;
 }
 
 void LedDriver_Destroy(void)
 {
 }
 
+void LedDriver_TurnOn(int ledNumber) {
+  *ledsAddress |= convertLedNumberToBitMask(ledNumber);
+}
+
+void LedDriver_TurnOff(int ledNumber) {
+  *ledsAddress &= ~convertLedNumberToBitMask(ledNumber);
+}
+
+void LedDriver_TurnAllOn(void) 
+{
+  *ledsAddress = ALL_LEDS_ON;
+}
 
