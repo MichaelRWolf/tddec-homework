@@ -31,14 +31,17 @@
 static u_int16_t * ledsAddress;	/* Write-only memory location of memory-mapped LEDs */
 static u_int16_t ledsImage;	/* Spy that caches the image to allow read on write-only location. */
 
+
 enum {
     ALL_LEDS_ON = ~0x0,
     ALL_LEDS_OFF = ~ALL_LEDS_ON,
 };
 
+
 static u_int16_t convertLedNumberToBitMask(int ledNumber) {
     return 0x1 << (ledNumber - 1);
 }
+
 
 void LedDriver_Create(u_int16_t * address)
 {
@@ -48,20 +51,24 @@ void LedDriver_Create(u_int16_t * address)
     *address = ledsImage;
 }
 
+
 void LedDriver_Destroy(void)
 {
     /* Empty */
 }
+
 
 void LedDriver_TurnOn(int ledNumber) {
     ledsImage |= convertLedNumberToBitMask(ledNumber);
     *ledsAddress |= ledsImage;
 }
 
+
 void LedDriver_TurnOff(int ledNumber) {
     ledsImage &= ~convertLedNumberToBitMask(ledNumber);
     *ledsAddress &= ledsImage;
 }
+
 
 void LedDriver_TurnAllOn(void) 
 {
