@@ -60,13 +60,13 @@ void LedDriver_Destroy(void)
 
 void LedDriver_TurnOn(int ledNumber) {
     ledsImage |= convertLedNumberToBitMask(ledNumber);
-    *ledsAddress |= ledsImage;
+    *ledsAddress = ledsImage;
 }
 
 
 void LedDriver_TurnOff(int ledNumber) {
     ledsImage &= ~convertLedNumberToBitMask(ledNumber);
-    *ledsAddress &= ledsImage;
+    *ledsAddress = ledsImage;
 }
 
 
@@ -78,5 +78,5 @@ void LedDriver_TurnAllOn(void)
 
 
 u_int16_t LedDriver_Image(void) {
-    return ledsImage;			/* Cannot read the write-only memory.  Must return the cached value. */
+    return ledsImage; // Cannot read from *ledsAddress.  It is write-only.  Must return cached value.
 }

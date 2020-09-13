@@ -45,7 +45,8 @@ TEST_GROUP(LedDriver)
 
 TEST(LedDriver, LedsOffAfterCreate)
 {
-    BYTES_EQUAL(0x0000, LedDriver_Image());
+    u_int16_t HAL_bits = LedDriver_Image();
+    CHECK_EQUAL(0x0000, HAL_bits);
 }
 
 
@@ -53,7 +54,8 @@ TEST(LedDriver, TurnOnOneLed)
 {
     LedDriver_TurnOn(1);
 
-    CHECK_EQUAL(1, LedDriver_Image());
+    u_int16_t HAL_bits = LedDriver_Image();
+    CHECK_EQUAL(0x0001, HAL_bits);
 }
 
 
@@ -62,7 +64,8 @@ TEST(LedDriver, TurnOffOneLed)
     LedDriver_TurnOn(1);
     LedDriver_TurnOff(1);
 
-    CHECK_EQUAL(0, LedDriver_Image());
+    u_int16_t HAL_bits = LedDriver_Image();
+    CHECK_EQUAL(0x0000, HAL_bits);
 }
 
 
@@ -71,7 +74,8 @@ TEST(LedDriver, TurnOnMultipleLeds)
     LedDriver_TurnOn(8);
     LedDriver_TurnOn(9);
 
-    BITS_EQUAL(0x0180, LedDriver_Image(), 0xffff);
+    u_int16_t HAL_bits = LedDriver_Image();
+    CHECK_EQUAL(0x0180, HAL_bits);
 }
 
 
@@ -81,7 +85,8 @@ TEST(LedDriver, TurnOffAnyLed)
     LedDriver_TurnOn(9);
     LedDriver_TurnOff(8);
 
-    BITS_EQUAL(0x0100, LedDriver_Image(), 0xffff);
+    u_int16_t HAL_bits = LedDriver_Image();
+    CHECK_EQUAL(0x0100, HAL_bits);
 }
 
 
@@ -89,26 +94,45 @@ TEST(LedDriver, AllOn)
 {
     LedDriver_TurnAllOn();
 
-    BITS_EQUAL(0xffff, LedDriver_Image(), 0xffff);
+    u_int16_t HAL_bits = LedDriver_Image();
+    CHECK_EQUAL(0xffff, HAL_bits);
 }
 
 
 
-
-// TEST(LedDriver, LedMemoryIsNotReadable)
-// {
-//     // In real hardware, we can write, but not read.
-//     // 'setup' should reset all LED's to off (0).
-//     // If we turn one on, we should "see" (i.e. read) that only one is on.
-
-//     virtualLeds = 0xffff;	// Set the known address
-
-//     LedDriver_TurnOn(8);
+// The register that holds bits for LEDs is write-only.  
+// It can NOT be read.
+// Repeat:  write-only + read-never
 
 
-//     image = LedDriver_Image();
+TEST(LedDriver, LedMemoryIsNotReadable)
+{
 
-//     BITS_EQUAL(0x0008, virtualLeds, 0xffff);
-// }
+    virtualLeds = 0xfa50; // If we SET or RESET bits with direct memory access ...
+
+    u_int16_t HAL_bits = LedDriver_Image(); // ... when we query them later...
+    CHECK_COMPARE(HAL_bits, !=, virtualLeds); // ... the cache is not correct.
+}
+
+    // --- BUT --- HOWEVER --- ON THE OTHER HAND....
+
+
+TEST(LedDriver, LedMemoryIsCachedForQuery)
+{
+    LedDriver_TurnOn(1);       // If we SET...
+    LedDriver_TurnOn(12);
+    LedDriver_TurnOn(13);	
+
+    LedDriver_TurnOff(8);	// ... or RESET bits with the HAL...
+
+    u_int16_t HAL_bits = LedDriver_Image(); // ... we can query them later...
+
+    u_int16_t expected_bits =
+    	(0x1 << ( 1 - 1)) |
+    	(0x1 << (12 - 1)) |
+    	(0x1 << (13 - 1)); 
+    CHECK_EQUAL(HAL_bits, expected_bits); // ... because the HAL keeps track for us.
+
+}
 
     
