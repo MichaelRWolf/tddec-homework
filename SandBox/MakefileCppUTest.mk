@@ -5,7 +5,7 @@ SILENCE = @
 COMPONENT_NAME = SandBox_CppUTest
 TARGET_LIB = \
 	lib/lib$(COMPONENT_NAME).a
-	
+
 TEST_TARGET = \
 	$(COMPONENT_NAME)_tests
 
