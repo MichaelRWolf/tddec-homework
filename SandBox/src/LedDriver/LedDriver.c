@@ -50,6 +50,7 @@ void LedDriver_Create(u_int16_t * address)
 
 void LedDriver_Destroy(void)
 {
+    /* Empty */
 }
 
 void LedDriver_TurnOn(int ledNumber) {
@@ -70,5 +71,5 @@ void LedDriver_TurnAllOn(void)
 
 
 u_int16_t LedDriver_Image(void) {
-    return *ledsAddress;
+    return 0;			/* Reading write-only memory returns all zeros. */
 }
