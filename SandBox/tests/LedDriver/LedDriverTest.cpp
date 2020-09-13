@@ -93,9 +93,16 @@ TEST(LedDriver, AllOn)
 }
 
 
-TEST(LedDriver, NextStep)
+TEST(LedDriver, LedMemoryIsNotReadable)
 {
-    FAIL("Pick up at page 55");
+    // In real hardware, we can write, but not read.
+    // 'setup' should reset all LED's to off (0).
+    // If we turn one on, we should "see" (i.e. read) that only one is on.
+
+    virtualLeds = ~0;
+    LedDriver_TurnOn(8);
+
+    BITS_EQUAL(0x0008, virtualLeds, 0xffff);
 }
 
     
