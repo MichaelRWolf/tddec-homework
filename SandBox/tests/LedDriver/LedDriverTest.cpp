@@ -172,3 +172,16 @@ TEST(LedDriver, OutOfBoundsTurnOffDoesNoHarm)
 
     CHECK_EQUAL(0xffff, virtualLeds);
 }
+
+
+TEST(LedDriver, OutOfBoundsTurnOnDoesNoHarm)
+{
+    LedDriver_TurnAllOff();
+
+    LedDriver_TurnOn(-1);
+    LedDriver_TurnOn(0);
+    LedDriver_TurnOn(17);	// Wrap past 16 bits?
+    LedDriver_TurnOn(33);	// Wrap past 32 bits?
+
+    CHECK_EQUAL(0xffff, virtualLeds);
+}
