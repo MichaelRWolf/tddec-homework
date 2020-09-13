@@ -33,5 +33,6 @@ void LedDriver_Destroy(void);
 void LedDriver_TurnOn(int);
 void LedDriver_TurnOff(int);
 void LedDriver_TurnAllOn(void);
+u_int16_t LedDriver_Image(void);
 
 #endif  /* D_LedDriver_H */
