@@ -11,13 +11,20 @@ Multiple LEDS can be turned on/off.
 + TurnOnMultipleLeds
 + TurnOffAnyLed
 + AllOn
-- AllOff
++ AllOff
 
 LED's are write-only.  Hardware is not readable
-LedMemoryIsNotReadable
++ AllOff
 
 Turn on all LEDS
++ AllOn 
+
 Turn off all LEDS
++ AllOff
+
 Query LED state
+- QueryLedState
+
+
 Check boundary values
 Check out-of-bounds values

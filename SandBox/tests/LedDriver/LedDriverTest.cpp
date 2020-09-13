@@ -99,6 +99,15 @@ TEST(LedDriver, AllOn)
 }
 
 
+TEST(LedDriver, AllOff)
+{
+    LedDriver_TurnOn(8);
+    LedDriver_TurnAllOff();
+
+    u_int16_t HAL_bits = LedDriver_Image();
+    CHECK_EQUAL(0x0, HAL_bits);
+}
+
 
 // The register that holds bits for LEDs is write-only.  
 // It can NOT be read.
@@ -114,7 +123,7 @@ TEST(LedDriver, LedMemoryIsNotReadable)
     CHECK_COMPARE(HAL_bits, !=, virtualLeds); // ... the cache is not correct.
 }
 
-    // --- BUT --- HOWEVER --- ON THE OTHER HAND....
+// --- BUT --- HOWEVER --- ON THE OTHER HAND....
 
 
 TEST(LedDriver, LedImageIsCachedForQuery)

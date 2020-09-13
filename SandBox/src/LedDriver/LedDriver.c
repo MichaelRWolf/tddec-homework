@@ -58,22 +58,34 @@ void LedDriver_Destroy(void)
 }
 
 
+static void _update_hardware(void) {
+    *ledsAddress = ledsImage;
+}
+
+
 void LedDriver_TurnOn(int ledNumber) {
     ledsImage |= convertLedNumberToBitMask(ledNumber);
-    *ledsAddress = ledsImage;
+    _update_hardware();
 }
 
 
 void LedDriver_TurnOff(int ledNumber) {
     ledsImage &= ~convertLedNumberToBitMask(ledNumber);
-    *ledsAddress = ledsImage;
+    _update_hardware();
 }
 
 
 void LedDriver_TurnAllOn(void) 
 {
     ledsImage = ALL_LEDS_ON;
-    *ledsAddress = ledsImage;
+    _update_hardware();
+}
+
+
+void LedDriver_TurnAllOff(void) 
+{
+    ledsImage = ~ALL_LEDS_ON;
+    _update_hardware();
 }
 
 
