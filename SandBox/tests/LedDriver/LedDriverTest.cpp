@@ -53,8 +53,8 @@ TEST(LedDriver, TurnOnOneLed)
 {
     LedDriver_TurnOn(1);
 
-    CHECK_EQUAL(1, LedDriver_Image())
-	}
+    CHECK_EQUAL(1, LedDriver_Image());
+}
 
 
 TEST(LedDriver, TurnOffOneLed)
@@ -62,8 +62,8 @@ TEST(LedDriver, TurnOffOneLed)
     LedDriver_TurnOn(1);
     LedDriver_TurnOff(1);
 
-    CHECK_EQUAL(0, LedDriver_Image())
-	}
+    CHECK_EQUAL(0, LedDriver_Image());
+}
 
 
 TEST(LedDriver, TurnOnMultipleLeds)

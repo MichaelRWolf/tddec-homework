@@ -32,20 +32,20 @@ static u_int16_t * ledsAddress;	/* Write-only memory location of memory-mapped L
 static u_int16_t ledsImage;	/* Spy that caches the image to allow read on write-only location. */
 
 enum {
-  ALL_LEDS_ON = ~0x0,
-  ALL_LEDS_OFF = ~ALL_LEDS_ON,
+    ALL_LEDS_ON = ~0x0,
+    ALL_LEDS_OFF = ~ALL_LEDS_ON,
 };
 
 static u_int16_t convertLedNumberToBitMask(int ledNumber) {
-  return 0x1 << (ledNumber - 1);
+    return 0x1 << (ledNumber - 1);
 }
 
 void LedDriver_Create(u_int16_t * address)
 {
-  ledsAddress = address;
+    ledsAddress = address;
   
-  ledsImage = ALL_LEDS_OFF;
-  *address = ledsImage;
+    ledsImage = ALL_LEDS_OFF;
+    *address = ledsImage;
 }
 
 void LedDriver_Destroy(void)
@@ -53,22 +53,22 @@ void LedDriver_Destroy(void)
 }
 
 void LedDriver_TurnOn(int ledNumber) {
-  ledsImage |= convertLedNumberToBitMask(ledNumber);
-  *ledsAddress |= ledsImage;
+    ledsImage |= convertLedNumberToBitMask(ledNumber);
+    *ledsAddress |= ledsImage;
 }
 
 void LedDriver_TurnOff(int ledNumber) {
-  ledsImage &= ~convertLedNumberToBitMask(ledNumber);
-  *ledsAddress &= ledsImage;
+    ledsImage &= ~convertLedNumberToBitMask(ledNumber);
+    *ledsAddress &= ledsImage;
 }
 
 void LedDriver_TurnAllOn(void) 
 {
-  ledsImage = ALL_LEDS_ON;
-  *ledsAddress = ledsImage;
+    ledsImage = ALL_LEDS_ON;
+    *ledsAddress = ledsImage;
 }
 
 
 u_int16_t LedDriver_Image(void) {
-  return *ledsAddress;
+    return *ledsAddress;
 }
