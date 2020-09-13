@@ -31,11 +31,16 @@
 static u_int16_t * ledsAddress;	/* Write-only memory location of memory-mapped LEDs */
 static u_int16_t ledsImage;	/* Spy that caches the image to allow read on write-only location. */
 
+static int isValidLedNumber(int);
+static u_int16_t convertLedNumberToBitMask(int);
+static void _update_hardware(void);
+
 
 enum {
-    ALL_LEDS_ON = ~0x0,
-    ALL_LEDS_OFF = ~ALL_LEDS_ON,
+    ALL_LEDS_OFF = 0x0000,
+    ALL_LEDS_ON = ~ALL_LEDS_OFF
 };
+
 
 
 static u_int16_t convertLedNumberToBitMask(int ledNumber) {
@@ -69,7 +74,15 @@ void LedDriver_TurnOn(int ledNumber) {
 }
 
 
+static int isValidLedNumber(int ledNumber) 
+{
+    return (ledNumber >= 1 && ledNumber <= 16);
+}
+
+
 void LedDriver_TurnOff(int ledNumber) {
+    if (! isValidLedNumber(ledNumber)) { return; }
+
     ledsImage &= ~convertLedNumberToBitMask(ledNumber);
     _update_hardware();
 }
