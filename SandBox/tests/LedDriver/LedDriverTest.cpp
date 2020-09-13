@@ -117,7 +117,7 @@ TEST(LedDriver, LedMemoryIsNotReadable)
     // --- BUT --- HOWEVER --- ON THE OTHER HAND....
 
 
-TEST(LedDriver, LedMemoryIsCachedForQuery)
+TEST(LedDriver, LedImageIsCachedForQuery)
 {
     LedDriver_TurnOn(1);       // If we SET...
     LedDriver_TurnOn(12);
