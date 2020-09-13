@@ -148,11 +148,11 @@ TEST(LedDriver, LedImageIsCachedForQuery)
 
 TEST(LedDriver, QueryLedState)
 {
-    LedDriver_TurnOn(1);
+    LedDriver_TurnOn(1);	// 0x0001
     LedDriver_TurnOff(2);
 
-    LedDriver_TurnOn(15);
-    LedDriver_TurnOn(16);
+    LedDriver_TurnOn(15);	// 0x4000
+    LedDriver_TurnOn(16);	// 0x8000
 
 
     u_int16_t HAL_bits = LedDriver_Image();
