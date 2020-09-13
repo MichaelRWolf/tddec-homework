@@ -159,4 +159,3 @@ TEST(LedDriver, QueryLedState)
     CHECK_EQUAL(0xC001, HAL_bits);
     CHECK_EQUAL(0xC001, virtualLeds);
 }
-
