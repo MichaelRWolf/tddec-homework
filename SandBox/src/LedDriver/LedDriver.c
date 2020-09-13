@@ -31,7 +31,7 @@
 static u_int16_t * ledsAddress;	/* Write-only memory location of memory-mapped LEDs */
 static u_int16_t ledsImage;	/* Spy that caches the image to allow read on write-only location. */
 
-static int isValidLedNumber(int);
+static int isLedNumberInvalid(int);
 static u_int16_t convertLedNumberToBitMask(int);
 static void _update_hardware(void);
 
@@ -68,14 +68,15 @@ static void _update_hardware(void) {
 }
 
 
-static int isValidLedNumber(int ledNumber) 
+enum {FIRST_LED_NUMBER = 1, LAST_LED_NUMBER = 16};
+static int isLedNumberInvalid(int ledNumber) /* Note negative sense:  Is... _IN_valid? */
 {
-    return (ledNumber >= 1 && ledNumber <= 16);
+    return (ledNumber < FIRST_LED_NUMBER || ledNumber > LAST_LED_NUMBER);
 }
 
 
 void LedDriver_TurnOn(int ledNumber) {
-    if (! isValidLedNumber(ledNumber)) { return; }
+    if (isLedNumberInvalid(ledNumber)) { return; }
 
     ledsImage |= convertLedNumberToBitMask(ledNumber);
     _update_hardware();
@@ -84,7 +85,7 @@ void LedDriver_TurnOn(int ledNumber) {
 
 
 void LedDriver_TurnOff(int ledNumber) {
-    if (! isValidLedNumber(ledNumber)) { return; }
+    if (isLedNumberInvalid(ledNumber)) { return; }
 
     ledsImage &= ~convertLedNumberToBitMask(ledNumber);
     _update_hardware();
