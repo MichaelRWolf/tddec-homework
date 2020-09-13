@@ -109,10 +109,11 @@ TEST(LedDriver, AllOff)
 }
 
 
+// ================================================================
 // The register that holds bits for LEDs is write-only.  
 // It can NOT be read.
 // Repeat:  write-only + read-never
-
+// ================================================================
 
 TEST(LedDriver, LedMemoryIsNotReadable)
 {
@@ -144,4 +145,16 @@ TEST(LedDriver, LedImageIsCachedForQuery)
 
 }
 
-    
+
+TEST(LedDriver, QueryLedState)
+{
+    LedDriver_TurnOn(1);
+    LedDriver_TurnOff(2);
+
+    LedDriver_TurnOn(15);
+    LedDriver_TurnOn(16);
+
+
+    u_int16_t HAL_bits = LedDriver_Image();
+    CHECK_EQUAL(HAL_bits, 0xC001);
+}
