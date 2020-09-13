@@ -156,5 +156,7 @@ TEST(LedDriver, QueryLedState)
 
 
     u_int16_t HAL_bits = LedDriver_Image();
-    CHECK_EQUAL(HAL_bits, 0xC001);
+    CHECK_EQUAL(0xC001, HAL_bits);
+    CHECK_EQUAL(0xC001, virtualLeds);
 }
+
