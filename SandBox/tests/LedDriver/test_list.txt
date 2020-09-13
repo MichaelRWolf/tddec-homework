@@ -27,6 +27,4 @@ Check boundary values
 + QueryLedStateWithUpperAndLowerBounds
 
 
-+ UpperAndLowerBounds
-
 Check out-of-bounds values

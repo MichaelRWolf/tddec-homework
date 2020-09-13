@@ -146,7 +146,7 @@ TEST(LedDriver, LedImageIsCachedForQuery)
 }
 
 
-TEST(LedDriver, QueryLedState)
+TEST(LedDriver, QueryLedStateWithUpperAndLowerBounds)
 {
     LedDriver_TurnOn(1);	// 0x0001
     LedDriver_TurnOff(2);
@@ -158,4 +158,17 @@ TEST(LedDriver, QueryLedState)
     u_int16_t HAL_bits = LedDriver_Image();
     CHECK_EQUAL(0xC001, HAL_bits);
     CHECK_EQUAL(0xC001, virtualLeds);
+}
+
+
+TEST(LedDriver, OutOfBoundsTurnOffDoesNoHarm)
+{
+    LedDriver_TurnAllOn();
+
+    LedDriver_TurnOff(-1);
+    LedDriver_TurnOff(0);
+    LedDriver_TurnOff(17);	// Wrap past 16 bits?
+    LedDriver_TurnOff(33);	// Wrap past 32 bits?
+
+    CHECK_EQUAL(0xffff, virtualLeds);
 }
