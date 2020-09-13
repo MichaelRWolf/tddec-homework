@@ -68,16 +68,19 @@ static void _update_hardware(void) {
 }
 
 
-void LedDriver_TurnOn(int ledNumber) {
-    ledsImage |= convertLedNumberToBitMask(ledNumber);
-    _update_hardware();
-}
-
-
 static int isValidLedNumber(int ledNumber) 
 {
     return (ledNumber >= 1 && ledNumber <= 16);
 }
+
+
+void LedDriver_TurnOn(int ledNumber) {
+    if (! isValidLedNumber(ledNumber)) { return; }
+
+    ledsImage |= convertLedNumberToBitMask(ledNumber);
+    _update_hardware();
+}
+
 
 
 void LedDriver_TurnOff(int ledNumber) {
