@@ -78,5 +78,5 @@ void LedDriver_TurnAllOn(void)
 
 
 u_int16_t LedDriver_Image(void) {
-    return 0;			/* Reading write-only memory returns all zeros. */
+    return ledsImage;			/* Cannot read the write-only memory.  Must return the cached value. */
 }
